@@ -29,11 +29,11 @@ import matplotlib.pyplot as plt
 ##################################################################################################################################################################
 
 # load dataset
-df_path = DATA_PATH[DATA_TYPE][DATA]
+df_path = './data/application/df_sfp.csv'
 index   = DATASET[DATA_TYPE][DATA]['INDEX']
 df      = pd.read_csv(df_path, index_col = index)
 
-df.to_csv('df_sfp.csv')
+print(os.environ.get('MY_ENV_VAR'))
 
 # divide dataset into X and y
 input = DATASET[DATA_TYPE][DATA][f'INPUT_{VER}']
@@ -70,13 +70,13 @@ run_experiment_cdda(X                = X,
                     res_df_pred_path = RES_PATH['PRED_ROOT'] + RES_PATH['CDDA'])
 
 ##################################################################################################################################################################
-# set experiment setting
+# visualize results
 ##################################################################################################################################################################
 
 res_dir_pred = RES_PATH['PRED_ROOT'] + RES_PATH['CDDA']
 res_dir_perf = RES_PATH['PERF_ROOT'] + RES_PATH['CDDA']
 
-file_name    = f'250618_APP_PDX_SGD_{CDD_METH_LIST[0]}_REC_12_V4'
+file_name    = f'{DATE}_{DATA_TYPE}_{DATA}_{ML_METH}_{CDD_METH_LIST[0]}_{CDA_METH_LIST[0]}_{LEN_BATCH}_{VER}'
 
 visualize_cdda_results(res_dir_pred=res_dir_pred, res_dir_perf=res_dir_perf, file_name=file_name)
 

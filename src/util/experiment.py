@@ -58,7 +58,7 @@ def run_experiment_cdda(X, y, scaler, tr_start_idx, tr_end_idx, len_batch, min_l
         param_comb_list = generate_parameter_combinations(CDD_PARAM_GRID=CDD_PARAM_GRID, CDD_METH=CDD_METH)
 
         for param_comb in param_comb_list:
-            print(f'param_comb: {param_comb}')
+            #print(f'param_comb: {param_comb}')
             start_time = time.time()
 
             cdda = CDD[CDD_METH](**param_comb)
@@ -82,17 +82,15 @@ def run_experiment_cdda(X, y, scaler, tr_start_idx, tr_end_idx, len_batch, min_l
             if PROB_TYPE == 'REG':
                 res_perf_idx = {
                     'cdd_method':      str(CDD_METH),
-                    'param':           json.dumps(param_comb),
-                    'init_tr_end_idx': tr_end_idx,
-                    'cd_idx':    cdda.res_cdda['cd_idx'], 
-                    'num_cd':    len(cdda.res_cdda['cd_idx']),
-                    'len_adapt': cdda.res_cdda['len_adapt'],
                     'mape':      np.round(mean_absolute_percentage_error(y_real_list, y_pred_list) * 100, 4),
                     'mae':       np.round(mean_absolute_error(y_real_list, y_pred_list), 4),
                     'rmse':      np.round(root_mean_squared_error(y_real_list, y_pred_list), 4),
                     'r2':        np.round(r2_score(y_real_list, y_pred_list), 4),
                     'ctq':       np.round(hit_ratio(y_real_list, y_pred_list, perf_bnd) * 100, 2),
-                    'exec_time(s)': np.round((end_time - start_time), 2)
+                    'num_cd':    len(cdda.res_cdda['cd_idx']),
+                    'exec_time(s)': np.round((end_time - start_time), 2),
+                    'init_tr_end_idx': tr_end_idx,
+                    'cd_idx':    cdda.res_cdda['cd_idx'], 
                 }
             elif PROB_TYPE == 'CLF':
                 res_perf_idx = {
@@ -105,7 +103,9 @@ def run_experiment_cdda(X, y, scaler, tr_start_idx, tr_end_idx, len_batch, min_l
                     'acc':       np.round(accuracy_score(y_real_list, y_pred_list) * 100, 2),
                 }                
             
-            print(res_perf_idx)
+            print('Experiment Results')
+            filtered = {k: v for k, v in res_perf_idx.items() if k not in {'init_tr_end_idx', 'cd_idx'}}
+            print(filtered)
 
             res_pred_idx = {
                 'cdd_method':   str(CDD_METH),

@@ -198,8 +198,6 @@ class DDM:
             te_start_idx = tr_end_idx
             te_end_idx   = min(tr_end_idx + len_batch, len(X))
 
-            print(f'tr_start_idx: {tr_start_idx} / tr_end_idx: {tr_end_idx} / te_start_idx: {te_start_idx} / te_end_idx: {te_end_idx}')
-
             # set dataset for ml model
             X_tr, y_tr, X_te, y_te = set_ml_dataset(tr_start_idx = tr_start_idx, 
                                                     tr_end_idx   = tr_end_idx, 
